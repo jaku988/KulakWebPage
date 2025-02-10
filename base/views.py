@@ -7,6 +7,10 @@ from .models import Reservation
 
 def home(request):
 
+
+    return render(request, 'base/home.html')
+
+def reservation(request):
     if request.method == "POST":
         form = ReservationForm(request.POST)
         if form.is_valid():
@@ -38,4 +42,4 @@ def home(request):
         "form": form
     }
 
-    return render(request, 'base/home.html', context)
+    return render(request, 'base/reservation_page.html', context)

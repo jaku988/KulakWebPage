@@ -1,0 +1,14 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<h3><u>To jest strona rezerwacji</u></h3>
+<div>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Rezerwuj" />
+    </form>
+    <a href="{% url 'home' %}">Powrót do strony głównej</a>
+</div>
+
+{% endblock content %}

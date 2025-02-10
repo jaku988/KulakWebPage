@@ -13,6 +13,12 @@ class ReservationForm(forms.ModelForm):
         widgets = {
             'time': DateTimePickerInput(attrs={'type': 'datetime-local'}),
         }
+        labels = {
+            'name' : 'Imię',
+            'surname' : 'Nazwisko',
+            'phone' : 'nr telefonu',
+            'email' : 'adres E-mail',
+        }
 
     def clean_time(self):
         time = self.cleaned_data.get('time')

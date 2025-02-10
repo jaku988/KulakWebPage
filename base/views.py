@@ -1,9 +1,11 @@
+from datetime import datetime
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.shortcuts import render
 from KulakWebPage import settings
 from .forms import ReservationForm
 from .models import Reservation
+import calendar
 
 def home(request):
 
@@ -11,8 +13,19 @@ def home(request):
     return render(request, 'base/home.html')
 
 def reservation(request):
+    #pobranie wszystkich rezerwaci w systemie
+    reservations = Reservation.objects.all()
+
+    #okreslenie daty
+    today = datetime.now()
+    month_days = calendar.monthcalendar(today.year, today.month)
+
+    #znalezienie dni w których sa rezerwacje
+    reserved_days = set(reservation.time.day for reservation in reservations if reservation.time.month == today.month)
+    print(reserved_days)
     if request.method == "POST":
         form = ReservationForm(request.POST)
+
         if form.is_valid():
             reservation = form.save()
             cancel_link = request.build_absolute_uri("")
@@ -39,7 +52,11 @@ def reservation(request):
         form = ReservationForm()
 
     context = {
-        "form": form
+        "form": form,
+        "reservations": reservations,
+        "reserved_days": reserved_days,
+        "current_month": today.month,
+        "current_year": today.year,
     }
-
+    print(reservations)
     return render(request, 'base/reservation_page.html', context)

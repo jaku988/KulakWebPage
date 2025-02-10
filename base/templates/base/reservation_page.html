@@ -1,14 +1,45 @@
 {% extends 'main.html' %}
 
 {% block content %}
-<h3><u>To jest strona rezerwacji</u></h3>
-<div>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Rezerwuj" />
-    </form>
-    <a href="{% url 'home' %}">Powrót do strony głównej</a>
-</div>
+    <h3><u>To jest strona rezerwacji</u></h3>
+    <div>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Rezerwuj" />
+        </form>
+        <a href="{% url 'home' %}">Powrót do strony głównej</a>
+    </div>
+
+    <!-- Kalendarz -->
+    <h4>Kalendarz rezerwacji na {{ current_month }}-{{ current_year }}</h4>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Pon</th>
+            <th>Wt</th>
+            <th>Śr</th>
+            <th>Czw</th>
+            <th>Pt</th>
+            <th>Sob</th>
+            <th>Nd</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for week in month_days %}
+            <tr>
+                {% for day in week %}
+                    {% if day != 0 %}
+                        <td {% if day in reserved_days %} style="background-color: red;" {% endif %}>
+                            {{ day }}
+                        </td>
+                    {% else %}
+                        <td></td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
 {% endblock content %}
